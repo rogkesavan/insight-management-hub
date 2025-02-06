@@ -3,6 +3,7 @@ import { DashboardLayout } from '@/components/DashboardLayout';
 import { StatsCard } from '@/components/StatsCard';
 import { Users, Smartphone, AppWindow, Activity, CreditCard, MapPin } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import { mockData } from '@/data/mockData';
 
 const Index = () => {
   const { data: userData } = useQuery({
