@@ -66,7 +66,7 @@ const Index = () => {
               icon={<Smartphone className="h-6 w-6" />}
             />
             <StatsCard
-              title="Applications"
+              title="Clusters"
               value={clusterSummary?.total || 0}
               description={`${clusterSummary?.active || 0} active clusters`}
               trend={{ value: 3.2, isPositive: true }}
