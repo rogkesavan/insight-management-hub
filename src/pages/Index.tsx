@@ -80,26 +80,6 @@ const mockData = {
   ]
 };
 
-const fetchData = async (endpoint: string) => {
-  // Simulate API call with mock data
-  await new Promise(resolve => setTimeout(resolve, 500));
-  
-  switch (endpoint) {
-    case '/user-management':
-      return mockData.userManagement;
-    case '/device-management':
-      return mockData.deviceManagement;
-    case '/application-services':
-      return mockData.applicationServices;
-    case '/user-payout':
-      return mockData.userPayout;
-    case '/recent-activity':
-      return mockData.recentActivity;
-    default:
-      throw new Error('Invalid endpoint');
-  }
-};
-
 interface UserData {
   total_users: number;
   verified_users: number;
@@ -147,30 +127,55 @@ interface ActivityData {
   icon: string;
 }
 
+const fetchUserData = async (): Promise<UserData> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockData.userManagement;
+};
+
+const fetchDeviceData = async (): Promise<DeviceData> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockData.deviceManagement;
+};
+
+const fetchAppData = async (): Promise<AppData> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockData.applicationServices;
+};
+
+const fetchPayoutData = async (): Promise<PayoutData> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockData.userPayout;
+};
+
+const fetchActivityData = async (): Promise<ActivityData[]> => {
+  await new Promise(resolve => setTimeout(resolve, 500));
+  return mockData.recentActivity;
+};
+
 const Index = () => {
-  const { data: userData } = useQuery<UserData>({
+  const { data: userData } = useQuery({
     queryKey: ['user-management'],
-    queryFn: () => fetchData('/user-management'),
+    queryFn: fetchUserData,
   });
 
-  const { data: deviceData } = useQuery<DeviceData>({
+  const { data: deviceData } = useQuery({
     queryKey: ['device-management'],
-    queryFn: () => fetchData('/device-management'),
+    queryFn: fetchDeviceData,
   });
 
-  const { data: appData } = useQuery<AppData>({
+  const { data: appData } = useQuery({
     queryKey: ['application-services'],
-    queryFn: () => fetchData('/application-services'),
+    queryFn: fetchAppData,
   });
 
-  const { data: payoutData } = useQuery<PayoutData>({
+  const { data: payoutData } = useQuery({
     queryKey: ['user-payout'],
-    queryFn: () => fetchData('/user-payout'),
+    queryFn: fetchPayoutData,
   });
 
-  const { data: activityData } = useQuery<ActivityData[]>({
+  const { data: activityData } = useQuery({
     queryKey: ['recent-activity'],
-    queryFn: () => fetchData('/recent-activity'),
+    queryFn: fetchActivityData,
   });
 
   const formatDate = (dateString: string) => {
