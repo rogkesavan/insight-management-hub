@@ -4,178 +4,30 @@ import { StatsCard } from '@/components/StatsCard';
 import { Users, Smartphone, AppWindow, Activity, CreditCard, MapPin } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
-// Mock API responses
-const mockData = {
-  userManagement: {
-    total_users: 15240,
-    verified_users: 12600,
-    unverified_users: 2640
-  },
-  deviceManagement: {
-    total_devices: 22540,
-    active_devices: 17850,
-    inactive_devices: 4690,
-    devices_per_user: 1.48,
-    device_usage_trends: "+8.2% increase in active devices last month",
-    device_locations: [
-      {
-        device_id: "D-90234",
-        location: {
-          city: "New York",
-          state: "NY",
-          country: "USA",
-          latitude: 40.7128,
-          longitude: -74.0060
-        },
-        status: "Active",
-        last_active: "2025-02-06T07:45:00Z"
-      },
-      {
-        device_id: "D-45678",
-        location: {
-          city: "San Francisco",
-          state: "CA",
-          country: "USA",
-          latitude: 37.7749,
-          longitude: -122.4194
-        },
-        status: "Inactive",
-        last_active: "2025-02-05T23:30:00Z"
-      }
-    ]
-  },
-  applicationServices: {
-    total_applications: 320,
-    active_applications: 280,
-    inactive_applications: 40,
-    cluster_status: "Healthy"
-  },
-  userPayout: {
-    total_payouts: 157600,
-    pending_payouts: 12450,
-    completed_payouts: 145150
-  },
-  recentActivity: [
-    {
-      id: 1,
-      user: "John Doe",
-      action: "Logged in",
-      timestamp: "2025-02-06T08:30:00Z",
-      icon: "login"
-    },
-    {
-      id: 2,
-      user: "Jane Smith",
-      action: "Updated profile",
-      timestamp: "2025-02-06T09:15:00Z",
-      icon: "profile"
-    },
-    {
-      id: 3,
-      user: "Mike Johnson",
-      action: "Added new device",
-      timestamp: "2025-02-06T10:00:00Z",
-      icon: "device"
-    }
-  ]
-};
-
-interface UserData {
-  total_users: number;
-  verified_users: number;
-  unverified_users: number;
-}
-
-interface DeviceData {
-  total_devices: number;
-  active_devices: number;
-  inactive_devices: number;
-  devices_per_user: number;
-  device_usage_trends: string;
-  device_locations: Array<{
-    device_id: string;
-    location: {
-      city: string;
-      state: string;
-      country: string;
-      latitude: number;
-      longitude: number;
-    };
-    status: string;
-    last_active: string;
-  }>;
-}
-
-interface AppData {
-  total_applications: number;
-  active_applications: number;
-  inactive_applications: number;
-  cluster_status: string;
-}
-
-interface PayoutData {
-  total_payouts: number;
-  pending_payouts: number;
-  completed_payouts: number;
-}
-
-interface ActivityData {
-  id: number;
-  user: string;
-  action: string;
-  timestamp: string;
-  icon: string;
-}
-
-const fetchUserData = async (): Promise<UserData> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockData.userManagement;
-};
-
-const fetchDeviceData = async (): Promise<DeviceData> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockData.deviceManagement;
-};
-
-const fetchAppData = async (): Promise<AppData> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockData.applicationServices;
-};
-
-const fetchPayoutData = async (): Promise<PayoutData> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockData.userPayout;
-};
-
-const fetchActivityData = async (): Promise<ActivityData[]> => {
-  await new Promise(resolve => setTimeout(resolve, 500));
-  return mockData.recentActivity;
-};
-
 const Index = () => {
   const { data: userData } = useQuery({
     queryKey: ['user-management'],
-    queryFn: fetchUserData,
+    queryFn: () => mockData.userManagement,
   });
 
   const { data: deviceData } = useQuery({
     queryKey: ['device-management'],
-    queryFn: fetchDeviceData,
+    queryFn: () => mockData.deviceManagement,
   });
 
   const { data: appData } = useQuery({
     queryKey: ['application-services'],
-    queryFn: fetchAppData,
+    queryFn: () => mockData.applicationServices,
   });
 
   const { data: payoutData } = useQuery({
     queryKey: ['user-payout'],
-    queryFn: fetchPayoutData,
+    queryFn: () => mockData.userPayout,
   });
 
   const { data: activityData } = useQuery({
     queryKey: ['recent-activity'],
-    queryFn: fetchActivityData,
+    queryFn: () => mockData.recentActivity,
   });
 
   const formatDate = (dateString: string) => {
@@ -190,6 +42,7 @@ const Index = () => {
   return (
     <DashboardLayout>
       <div className="space-y-8">
+        {/* Stats Cards Section */}
         <div>
           <h2 className="text-3xl font-bold text-white mb-6">Dashboard Overview</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
@@ -208,7 +61,7 @@ const Index = () => {
               icon={<Smartphone className="h-6 w-6" />}
             />
             <StatsCard
-              title="Applications"
+              title="Clusters & Services"
               value={appData?.total_applications || 0}
               description={`${appData?.active_applications || 0} active`}
               trend={{ value: 3.2, isPositive: true }}
@@ -224,7 +77,9 @@ const Index = () => {
           </div>
         </div>
 
+        {/* Activity and Device Location Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Recent Activity Card */}
           <Card className="p-6 bg-card">
             <h3 className="text-lg font-semibold text-white mb-4">Recent Activity</h3>
             <div className="space-y-4">
@@ -248,6 +103,7 @@ const Index = () => {
             </div>
           </Card>
 
+          {/* Device Locations Card */}
           <Card className="p-6 bg-card">
             <h3 className="text-lg font-semibold text-white mb-4">Device Locations</h3>
             <div className="space-y-4">
