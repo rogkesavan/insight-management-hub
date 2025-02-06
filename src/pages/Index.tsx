@@ -3,6 +3,7 @@ import { DashboardLayout } from '@/components/DashboardLayout';
 import { StatsCard } from '@/components/StatsCard';
 import { Users, Smartphone, AppWindow, Activity, CreditCard, MapPin } from 'lucide-react';
 import { Card } from '@/components/ui/card';
+import Globe from '@/components/Globe';
 
 // Mock API responses
 const mockData = {
@@ -245,35 +246,40 @@ const Index = () => {
 
           <Card className="p-6 bg-card">
             <h3 className="text-lg font-semibold text-white mb-4">Device Locations</h3>
-            <div className="space-y-4">
-              {deviceData?.device_locations ? (
-                deviceData.device_locations.map((device) => (
-                  <div key={device.device_id} className="flex items-center space-x-4 text-sm">
-                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                      <MapPin className="w-4 h-4 text-primary" />
+            {deviceData?.device_locations ? (
+              <>
+                <div className="mb-6">
+                  <Globe locations={deviceData.device_locations} />
+                </div>
+                <div className="space-y-4">
+                  {deviceData.device_locations.map((device) => (
+                    <div key={device.device_id} className="flex items-center space-x-4 text-sm">
+                      <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                        <MapPin className="w-4 h-4 text-primary" />
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-white">
+                          <span className="font-medium">{device.device_id}</span>
+                        </p>
+                        <p className="text-muted-foreground">
+                          {device.location.city}, {device.location.state}
+                        </p>
+                        <p className="text-xs text-muted-foreground">
+                          Last active: {formatDate(device.last_active)}
+                        </p>
+                      </div>
+                      <span className={`px-2 py-1 rounded-full text-xs ${
+                        device.status === 'Active' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'
+                      }`}>
+                        {device.status}
+                      </span>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-white">
-                        <span className="font-medium">{device.device_id}</span>
-                      </p>
-                      <p className="text-muted-foreground">
-                        {device.location.city}, {device.location.state}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        Last active: {formatDate(device.last_active)}
-                      </p>
-                    </div>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      device.status === 'Active' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'
-                    }`}>
-                      {device.status}
-                    </span>
-                  </div>
-                ))
-              ) : (
-                <p className="text-muted-foreground">Loading device locations...</p>
-              )}
-            </div>
+                  ))}
+                </div>
+              </>
+            ) : (
+              <p className="text-muted-foreground">Loading device locations...</p>
+            )}
           </Card>
         </div>
       </div>
