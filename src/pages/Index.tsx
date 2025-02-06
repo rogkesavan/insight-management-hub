@@ -54,7 +54,7 @@ const Index = () => {
             <StatsCard
               title="Total Users"
               value={userSummary?.total || 0}
-              description={`${userSummary?.verified || 0} verified users`}
+              description={`${userSummary?.verified || 0} verified`}
               trend={{ value: 12.5, isPositive: true }}
               icon={<Users className="h-6 w-6" />}
             />
@@ -66,7 +66,7 @@ const Index = () => {
               icon={<Smartphone className="h-6 w-6" />}
             />
             <StatsCard
-              title="Clusters"
+              title="Applications"
               value={clusterSummary?.total || 0}
               description={`${clusterSummary?.active || 0} active clusters`}
               trend={{ value: 3.2, isPositive: true }}
@@ -86,48 +86,56 @@ const Index = () => {
           <Card className="p-6 bg-card">
             <h3 className="text-lg font-semibold text-white mb-4">Recent Activity</h3>
             <div className="space-y-4">
-              {trackingLogs?.user_activity_logs?.map((activity) => (
-                <div key={`${activity.user_id}-${activity.timestamp}`} className="flex items-center space-x-4 text-sm">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <Activity className="w-4 h-4 text-primary" />
+              {trackingLogs?.user_activity_logs ? (
+                trackingLogs.user_activity_logs.map((activity) => (
+                  <div key={`${activity.user_id}-${activity.timestamp}`} className="flex items-center space-x-4 text-sm">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Activity className="w-4 h-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-white">
+                        <span className="font-medium">User {activity.user_id}</span> {activity.activity}
+                      </p>
+                      <p className="text-muted-foreground">{formatDate(activity.timestamp)}</p>
+                    </div>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-white">
-                      <span className="font-medium">User {activity.user_id}</span> {activity.activity}
-                    </p>
-                    <p className="text-muted-foreground">{formatDate(activity.timestamp)}</p>
-                  </div>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-muted-foreground">Loading activity...</p>
+              )}
             </div>
           </Card>
 
           <Card className="p-6 bg-card">
             <h3 className="text-lg font-semibold text-white mb-4">Device Locations</h3>
             <div className="space-y-4">
-              {deviceLocations?.device?.map((device) => (
-                <div key={device.device_id} className="flex items-center space-x-4 text-sm">
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
-                    <MapPin className="w-4 h-4 text-primary" />
+              {deviceLocations?.device ? (
+                deviceLocations.device.map((device) => (
+                  <div key={device.device_id} className="flex items-center space-x-4 text-sm">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <MapPin className="w-4 h-4 text-primary" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-white">
+                        <span className="font-medium">{device.device_id}</span>
+                      </p>
+                      <p className="text-muted-foreground">
+                        {device.location.city}, {device.location.state}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        Last active: {formatDate(device.last_active)}
+                      </p>
+                    </div>
+                    <span className={`px-2 py-1 rounded-full text-xs ${
+                      device.status === 'Active' ? 'bg-success/10 text-success' : 'bg-danger/10 text-danger'
+                    }`}>
+                      {device.status}
+                    </span>
                   </div>
-                  <div className="flex-1">
-                    <p className="text-white">
-                      <span className="font-medium">Device {device.device_id}</span>
-                    </p>
-                    <p className="text-muted-foreground">
-                      {device.location.city}, {device.location.state}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      Last active: {formatDate(device.last_active)}
-                    </p>
-                  </div>
-                  <span className={`px-2 py-1 rounded-full text-xs ${
-                    device.status === 'Active' ? 'bg-green-500/10 text-green-500' : 'bg-red-500/10 text-red-500'
-                  }`}>
-                    {device.status}
-                  </span>
-                </div>
-              ))}
+                ))
+              ) : (
+                <p className="text-muted-foreground">Loading device locations...</p>
+              )}
             </div>
           </Card>
         </div>
