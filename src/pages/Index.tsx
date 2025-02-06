@@ -68,7 +68,7 @@ const Index = () => {
             <StatsCard
               title="Applications"
               value={clusterSummary?.total || 0}
-              description={`${clusterSummary?.active || 0} active`}
+              description={`${clusterSummary?.active || 0} active clusters`}
               trend={{ value: 3.2, isPositive: true }}
               icon={<AppWindow className="h-6 w-6" />}
             />
