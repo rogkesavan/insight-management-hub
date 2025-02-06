@@ -1,12 +1,12 @@
 import React from 'react';
 import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from '@/components/ui/sidebar';
-import { LayoutDashboard, Users, Smartphone, Apps, Activity, CreditCard } from 'lucide-react';
+import { LayoutDashboard, Users, Smartphone, AppWindow, Activity, CreditCard } from 'lucide-react';
 
 const navigation = [
   { name: 'Overview', icon: LayoutDashboard, href: '/' },
   { name: 'Users', icon: Users, href: '/users' },
   { name: 'Devices', icon: Smartphone, href: '/devices' },
-  { name: 'Applications', icon: Apps, href: '/applications' },
+  { name: 'Applications', icon: AppWindow, href: '/applications' },
   { name: 'Activity', icon: Activity, href: '/activity' },
   { name: 'Payouts', icon: CreditCard, href: '/payouts' },
 ];

@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { DashboardLayout } from '@/components/DashboardLayout';
 import { StatsCard } from '@/components/StatsCard';
-import { Users, Smartphone, Apps, Activity, CreditCard } from 'lucide-react';
+import { Users, Smartphone, AppWindow, Activity, CreditCard } from 'lucide-react';
 import { Card } from '@/components/ui/card';
 
 const fetchData = async (endpoint: string) => {
@@ -52,7 +52,7 @@ const Index = () => {
               title="Applications"
               value={appData?.total_applications || 0}
               description={`${appData?.active_applications || 0} active`}
-              icon={<Apps className="h-6 w-6" />}
+              icon={<AppWindow className="h-6 w-6" />}
             />
             <StatsCard
               title="Total Payouts"
